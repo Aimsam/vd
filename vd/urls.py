@@ -8,7 +8,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^hello/$', hello),
+    url(r'^hello/(.*)', getIncrementById),
     url(r'^love/(.*)', love),
     url(r'^get_list/$', get_list),
 #    url(r'^/api/get_video/', hello),
