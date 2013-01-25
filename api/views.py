@@ -50,7 +50,10 @@ def get_list(request):
             list = list.filter(author=author)
         list = list.all()
         paginator = Paginator(list, PAGE_COUNT)
-        list = paginator.page(page)
+        try:
+            list = paginator.page(page)
+        except :
+            return HttpResponse(json.dumps({'code':202, 'message':'error page number', 'max_num':paginator.num_pages}, indent = 1))
         cache.set(cacheKey, list, 24*3600)
     videoList = []
     for video in list:
@@ -112,7 +115,11 @@ def getIncrementById(id):
         data = {'love' : 0, 'click' : 0}
         cache.set(cacheKey, data)
         keys = cache.get(CACHE_KEY_VIDEO_KEYS)
-        keys.append(id) 
+        if keys is None:
+            keys = [id]
+        else:
+            keys.append(id) 
+        cache.set(CACHE_KEY_VIDEO_KEYS, keys)    
     return data
 
 def hello(request):
@@ -121,7 +128,10 @@ def hello(request):
     #time.sleep(10)
     return HttpResponse(cache.get("test"))
 
-def forceRefresh():
-    return HttpResponse("")
+def forceRefresh(request):
+    
+    cache.clear()
+    
+    return HttpResponse("success")
 
 
