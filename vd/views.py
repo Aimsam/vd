@@ -6,5 +6,4 @@ import os
 def index(request):
     #print os.path.dirname(__file__) + "/template"
     list = cache.get("cache_key_video_list_author_all_page_1_node_1")
-    return HttpResponse(list)
     return render_to_response('index.html', {'list':list})

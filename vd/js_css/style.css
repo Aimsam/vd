@@ -1,0 +1,38 @@
+.video{
+    background: #dbdbcc;
+    border: 1px solid red;
+    float: left;
+    height: 380px;
+    width: 380px;
+}
+
+.title {
+    margin-top: 1px;
+    background: #000000;
+    text-align: center;
+    font-size: 15px;
+    color: #ffffff;
+}
+
+.published {
+    float: left;
+}
+.duration {
+    float: right;
+}
+
+.published,.duration{
+    width: 50%;
+    background: #dbdbcc;
+    text-align: center;
+}
+.description {
+    background: #dbdbcc;
+    text-align: center;
+}
+.thumbnail img{
+    background: #dbdbcc;
+    width: 378px;
+    height: 300px;
+    text-align: center;
+}
