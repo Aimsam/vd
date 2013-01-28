@@ -7,8 +7,7 @@ from django.db.models import Q
 from admin.models import *
 from django.core.cache import cache
 import json
-import time
-import datetime
+import service
 
 PAGE_COUNT = 20
 CACHE_KEY_VIDEO_LIST = "cache_key_video_list"
