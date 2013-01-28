@@ -11,13 +11,13 @@ urlpatterns = patterns('',
     url(r'^love/(.*)', love),
     url(r'^get_list/$', get_list),
     url(r'^aaa/$', views.index),
-    url(r'^delete/$', forceRefresh)
+    url(r'^delete/$', forceRefresh),
     url(r'^js/(.*)$','django.views.static.serve',
-        {'document_root':os.path.dirname(__file__)+'vd/js_css/'}
-    )
+        {'document_root':os.path.dirname(__file__)+'/js_css/'}
+    ),
     url(r'^css/(.*)$','django.views.static.serve',
-        {'document_root':os.path.dirname(__file__)+'vd/js_css/'}
-    )
+        {'document_root':os.path.dirname(__file__)+'/js_css/'}
+    ),
 #    url(r'^/api/get_video/', hello),
 #    url(r'^/api//', hello),
 #    url(r'^/api/hello/', hello),
