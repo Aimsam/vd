@@ -10,7 +10,7 @@ function load(){
                     var text = '';
                     for(var i=0; i< obj.list.length;i++){
                         text += "<div class='video'>";
-                        text += "<div class='title'>" + obj.list[i].title + "</div>";
+                        text += "<div class='title'>" + obj.list[i].title + "| love:" + obj.list[i].love + "</div>";
                         text += "<div class='published'>发布时间:" + obj.list[i].published + "</div>";
                         text += "<div class='duration'>视频时长:" + obj.list[i].duration + "</div>";
                         text += "<div class='thumbnail'> <a href='http://cuit.sinaapp.com/player_ss.swf?VideoIDS=" + obj.list[i].id+"'>";

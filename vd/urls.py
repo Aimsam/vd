@@ -7,11 +7,9 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^hello/(.*)', getIncrementById),
     url(r'^love/(.*)', love),
     url(r'^get_list/$', get_list),
     url(r'^aaa/$', views.index),
-    url(r'^delete/$', forceRefresh),
     url(r'^js/(.*)$','django.views.static.serve',
         {'document_root':os.path.dirname(__file__)+'/js_css/'}
     ),
