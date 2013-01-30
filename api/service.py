@@ -23,7 +23,7 @@ def get_list_update(page, node, author):
         cacheKey = "%s_author_%s_page_%s_node_%s" % (CACHE_KEY_VIDEO_LIST, author, i, node)
         cache.delete(cacheKey)
     #@todo
-    
+
     return get_list(page, node, author)
 
 def get_list(page, node, author):
