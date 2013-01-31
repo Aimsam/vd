@@ -1,11 +1,11 @@
 var page = 1
 
-function load(){
+function load_videos(){
     $("#load").fadeIn();
     $.ajax({
-        url : "http://localhost:8000/get_list/?page="+page++,
+        url : "http://dota.idealweb.cn/get_list/?page="+page++,
         success : function(data) {
-            var obj = jQuery.parseJSON(data)
+            var obj = jQuery.parseJSON(data);
             if(obj.code == 200){
                 $("#videos").append(function(){
                     var text = '';
@@ -26,36 +26,51 @@ function load(){
         }});
 }
 
-function update_url(id) {
+function load_flash(id) {
+    $("#flash").html("正在加载。。。");
     $("#flash").html(
         '<p><object width="480" height="400" classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0" align="middle"><param name="allowfullscreen" value="true"><param name="quality" value="high"><param name="allowscriptaccess" value="always"><embed width="480" height="400" type="application/x-shockwave-flash" ' +
             'src="http://player.opengg.me/player.php/sid/' + id +
             '/v.swf" allowfullscreen="true" quality="high" allowscriptaccess="always" align="middle"><param name="src" value="http://player.opengg.me/player.php/sid/' + id +
             '/v.swf"></object></p>');
-
 }
 
-window.onscroll=function(){
+function load_comment(id) {
+    $("#comment").html("正在加载。。。分页没做，评论没做");
+    $.ajax({
+        url : "https://openapi.youku.com/v2/comments/by_video.json?client_id=74f3668e4f16ef9f&count=30&video_id=" + id +"&page=1",
+        success : function(data) {
+            var text = "";
+            for (var i = 0; i < data.comments.length; ++i) {
+                text += (i+1) + ":" + data.comments[i].user.name + ":" + data.comments[i].content + "\n\n";
+            }
+            $("#comment").html(text);
+        }
+    });
+}
+
+window.OnScroll = function(){
     var a = document.documentElement.scrollTop==0? document.body.clientHeight : document.documentElement.clientHeight;
     var b = document.documentElement.scrollTop==0? document.body.scrollTop : document.documentElement.scrollTop;
     var c = document.documentElement.scrollTop==0? document.body.scrollHeight : document.documentElement.scrollHeight;
     if(a+b==c){
         $.ajax({
             url : "http://localhost:8000/get_list/?page="+page++,
-            success : load()
+            success : load_videos()
         });
     }
 }
 
 $(document).ready(function(){
-    load();
+    $("#videos").html("正在加载》》》");
+    load_videos();
     $(document).on("click", ".title", function() {
-        update_url($(this).parent().attr("id"));
-        //$("#videos").fadeOut();
+        var id = $(this).parent().attr("id");
+        load_flash(id);
+        load_comment(id);
         $("#video_detail").fadeIn();
-    })
+    });
     $('#return').click(function() {
-        //$("#videos").fadeIn();
         $("#video_detail").fadeOut();
     });
 });
