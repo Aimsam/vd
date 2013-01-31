@@ -14,8 +14,8 @@ function load_videos(){
                         text += "<div class='title'>" + obj.list[i].title + "| love:" + obj.list[i].love + "</div>";
                         text += "<div class='published'>发布时间:" + obj.list[i].published + "</div>";
                         text += "<div class='duration'>视频时长:" + obj.list[i].duration + "</div>";
-                        text += "<div class='thumbnail'> <a href='http://cuit.sinaapp.com/player_ss.swf?VideoIDS=" + obj.list[i].id+"'>";
-                        text += "<img src=" + obj.list[i].thumbnail + " /></a></div>";
+                        text += "<div class='thumbnail'> ";
+                        text += "<img src=" + obj.list[i].thumbnail + " /></div>";
                         text += "<div class='description'>" + obj.list[i].description + "</div>";
                         text += "</div>";
                     }
@@ -60,7 +60,7 @@ window.onscroll = function(){
 
 $(document).ready(function(){
     load_videos();
-    $(document).on("click", ".title", function() {
+    $(document).on("click", ".thumbnail", function() {
         var id = $(this).parent().attr("id");
         load_flash(id);
         load_comment(id);
