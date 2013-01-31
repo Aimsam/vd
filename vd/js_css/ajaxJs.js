@@ -27,7 +27,7 @@ function load_videos(){
 }
 
 function load_flash(id) {
-    $("#flash").html("正在加载。。。");
+    $("#flash").html("正在加载 flash...");
     $("#flash").html(
         '<p><object width="480" height="400" classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0" align="middle"><param name="allowfullscreen" value="true"><param name="quality" value="high"><param name="allowscriptaccess" value="always"><embed width="480" height="400" type="application/x-shockwave-flash" ' +
             'src="http://player.opengg.me/player.php/sid/' + id +
@@ -62,7 +62,6 @@ window.OnScroll = function(){
 }
 
 $(document).ready(function(){
-    $("#videos").html("正在加载》》》");
     load_videos();
     $(document).on("click", ".thumbnail", function() {
         var id = $(this).parent().attr("id");
