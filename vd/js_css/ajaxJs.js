@@ -1,6 +1,7 @@
 var page = 1
 
 function load(){
+    $("#load").fadeIn();
     $.ajax({
         url : "http://localhost:8000/get_list/?page="+page++,
         success : function(data) {
@@ -21,6 +22,7 @@ function load(){
                     return text;
                 });
             }
+            $("#load").fadeOut();
         }});
 }
 
