@@ -3,6 +3,7 @@
 from django.http import HttpResponse
 import service
 
+
 #id=2
 def get_list(request):
     if 'page' not in request.GET:
@@ -31,6 +32,14 @@ def love(request, id):
 
     return service.love(request, id)
 
+def love_update():
 
+    return None
+
+
+
+#id = 2
+def get_author_list(request):
+    return None
 
 

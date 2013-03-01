@@ -11,7 +11,7 @@ CACHE_KEY_VIDEO_LIST = "cache_key_video_list"
 CACHE_KEY_VIDEO_KEYS = "cache_key_video_keys"
 CACHE_KEY_VIDEO = "cache_key_video"
 CACHE_KEY_VIDEO_LIST_KEYS = "cache_key_video_list_keys"
-
+CACHE_KEY_AUTHOR_LIST = "cache_key_author_list"
 
 
 
@@ -51,7 +51,7 @@ def get_list(page, node, author):
         cache.set(cacheKey, list, 24*3600)
     videoList = []
     for video in list:
-        increment = getIncrementById(video.id)
+        increment = get_increment_byid(video.id)
         video_tmp = {'id' : video.id,
                      #'author':video.author.id,
                      'user' : video.user.name,
@@ -69,7 +69,7 @@ def get_list(page, node, author):
     data = {'code':200, 'message':'success', 'author':authorName, 'node':'dota', 'list':videoList}
     return json.dumps(data, indent = 1, sort_keys=False)
 
-def getIncrementById(id):
+def get_increment_byid(id):
     cacheKey = "%s_love_click_id_%s" % (CACHE_KEY_VIDEO, id)
     data = cache.get(cacheKey)
     if data is None:
@@ -94,7 +94,7 @@ def love(request, id):
         response.write(json.dumps(result, indent = 1))
         return response
     else:
-        response.set_cookie("jz", "1", max_age = 1)
+        response.set_cookie("jz", "1", max_age = 10)
     cacheKey = "%s_love_click_id_%s" % (CACHE_KEY_VIDEO, id)
     data = cache.get(cacheKey)
     if data is None:
@@ -115,6 +115,7 @@ def love(request, id):
             return response
     else:
         data['love']  += 1
+        print data
         cache.set(cacheKey, data)
     result = {"code":100, "message":"success", "id":id, "love":data['love']}
     response.write(json.dumps(result, indent = 1))
@@ -128,15 +129,16 @@ def love_update():
         video = Video.objects.get(id=row)
         cacheKey = "%s_love_click_id_%s" % (CACHE_KEY_VIDEO, row)
         data = cache.get(cacheKey)
+        print data
         video.love += data['love']
         video.save()
         cache.delete(cacheKey)
         cache.delete(CACHE_KEY_VIDEO_KEYS)
     return True
 
+def get_author_list():
 
-
-
+    return True
 
 
 
