@@ -1,5 +1,5 @@
 var page = 1;
-var domain = "http://192.168.1.112:8000";
+var domain = "http://localhost:8000";
 
 //加载视频列表
 function load_videos(){

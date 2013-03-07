@@ -34,7 +34,7 @@ def love(request, id):
 
 def love_update():
 
-    return None
+    return service.love_update()
 
 
 

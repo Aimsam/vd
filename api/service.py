@@ -15,7 +15,7 @@ CACHE_KEY_AUTHOR_LIST = "cache_key_author_list"
 
 
 
-def get_list_update(page, node, author):
+def get_list_update(node, author):
     list = Video.objects.filter(node = node).all()
     paginator = Paginator(list, PAGE_COUNT)
     page_num = paginator.num_pages
@@ -24,7 +24,7 @@ def get_list_update(page, node, author):
         cache.delete(cacheKey)
     #@todo
 
-    return get_list(page, node, author)
+    return True
 
 def get_list(page, node, author):
     if author == 'all':
@@ -50,6 +50,7 @@ def get_list(page, node, author):
             return json.dumps({'code':202, 'message':'error page number', 'max_num':paginator.num_pages}, indent = 1)
         cache.set(cacheKey, list, 24*3600)
     videoList = []
+
     for video in list:
         increment = get_increment_byid(video.id)
         video_tmp = {'id' : video.id,
@@ -94,7 +95,7 @@ def love(request, id):
         response.write(json.dumps(result, indent = 1))
         return response
     else:
-        response.set_cookie("jz", "1", max_age = 10)
+        response.set_cookie("jz", "1", max_age = 5)
     cacheKey = "%s_love_click_id_%s" % (CACHE_KEY_VIDEO, id)
     data = cache.get(cacheKey)
     if data is None:
@@ -134,6 +135,7 @@ def love_update():
         video.save()
         cache.delete(cacheKey)
         cache.delete(CACHE_KEY_VIDEO_KEYS)
+        get_list_update(1, 'all')#fresh list cache
     return True
 
 def get_author_list():
