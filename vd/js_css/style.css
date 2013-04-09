@@ -41,3 +41,29 @@
     width: 90px;
     text-align: center;
 }
+.author {
+    margin: 5px;
+    width: 250px;
+    height: 250px;
+    background-color: #f5f5dc;
+    float: left;
+    
+}
+.author_name {
+    float: left;
+}
+.author_love {
+    float: right;
+    background: blue;
+    width: 90px;
+    text-align: center;
+}
+.author_avatar img {
+    text-align: center;
+    width: 200px;
+    height: 150px;
+}
+.follow {
+    float: right;
+    background-color:  #bc8f8f;
+}

@@ -9,12 +9,18 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^love/(.*)', love),
     url(r'^get_list/$', get_list),
+    url(r'^get_author_list/$', get_author_list),
     url(r'^aaa/$', views.index),
+    url(r'^follow/$', follow),
+    url(r'^test/$', test),
     url(r'^js/(.*)$','django.views.static.serve',
         {'document_root':os.path.dirname(__file__)+'/js_css/'}
     ),
     url(r'^css/(.*)$','django.views.static.serve',
         {'document_root':os.path.dirname(__file__)+'/js_css/'}
+    ),
+    url(r'^img/(.*)$','django.views.static.serve',
+        {'document_root':os.path.dirname(__file__)+'/img/'}
     ),
 #    url(r'^/api/get_video/', hello),
 #    url(r'^/api//', hello),

@@ -14,11 +14,13 @@ class Node(models.Model):
 class Author(models.Model):
     id = models.CharField(max_length = 50, primary_key = True)
     name = models.CharField(max_length = 50)
+    description = models.CharField(max_length = 255, blank = True)
     avatar = models.CharField(max_length = 255, blank = True)    
     love = models.IntegerField(blank = True, default = 1)
     click = models.IntegerField(blank = True, default = 1)
-    type = models.IntegerField(blank = True, default = 1)    
-    
+    type = models.IntegerField(blank = True, default = 1)
+    node = models.ForeignKey(Node)
+
     class Meta:
         db_table = u'author'    
 
@@ -49,10 +51,12 @@ class Video(models.Model):
     tags = models.ManyToManyField(Tag, blank = True)
     title = models.CharField(max_length = 255, blank = True)
     thumbnail = models.CharField(max_length = 255, blank = True)
+    thumbnail_2 = models.CharField(max_length = 255, blank = True)
     quality = models.CharField(max_length = 10, blank = True)
     duration = models.CharField(max_length = 10, blank = True)
     published = models.DateField(default = 1, blank = True)
     description = models.TextField(blank = True)
+    remarks = models.TextField(blank = True)
     type = models.IntegerField(blank = True, default = 1)
     love = models.IntegerField(blank = True, default = 1)
     click = models.IntegerField(blank = True, default = 1)

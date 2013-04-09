@@ -88,11 +88,12 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -155,10 +156,15 @@ LOGGING = {
 CACHES = {
     "default": {
         "BACKEND": "redis_cache.cache.RedisCache",
-        "LOCATION": "127.0.0.1:6379:1",
+        "LOCATION": "127.0.0.1:6379:2",
         "OPTIONS": {
             "CLIENT_CLASS": "redis_cache.client.DefaultClient",
         }
     }
 }
 
+SPHINX = {
+    "host" : "127.0.0.1",
+    "port" : 9312,
+
+}
