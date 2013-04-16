@@ -171,7 +171,7 @@ def get_author_list(_node):
         }
         print tmp
         authorList.append(tmp)
-    return "jsonp(" + str({"code" : 300, "message" : "success", "list" : authorList}) + ")"
+    return "jsonp(" + str({"code" : 300, "message" : "success", "list" : str(authorList)}) + ")"
 
 
 #follow the authors id = 4

@@ -216,23 +216,22 @@ window.onscroll = function(){
 }
 
 $(document).ready(function(){
-    //test
-//    alert('');
-//    $.ajax({
-//        type:'get',
-//        url:'http://localhost:8000/test',
-//        dataType:'jsonp',
-//        jsonp:"callback",
-//        jsonpCallback:"cccc",
-//        //data:{"a":"insert", "type":"aa", "time":"bb", "id":"dd", "allowVote":"cc"},
-//        async: false,
-//        error: function(data) {
-//          alert(data);
-//        },
-//        success:function(data){
-//            alert("ddd");
-//        }
-//    })
+
+    $.ajax({
+        type:'get',
+        url:'http://localhost:8000/api/get_author_list/1',
+        dataType:'jsonp',
+        jsonp:"callback",
+        jsonpCallback:"jsonp",
+        //data:{"a":"insert", "type":"aa", "time":"bb", "id":"dd", "allowVote":"cc"},
+        async: false,
+        error: function(data) {
+          alert(data);
+        },
+        success:function(data){
+            alert("ddd");
+        }
+    })
 
 
 
