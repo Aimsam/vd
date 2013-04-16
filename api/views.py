@@ -41,8 +41,11 @@ def love_update():
     return service.love_update()
 
 #id = 3
-def get_author_list(request):
-    return HttpResponse(service.get_author_list())
+def get_author_list(request, node):
+    if '_force_refresh_' == node:
+        return HttpResponse(service.fresh_author_list())
+
+    return HttpResponse(service.get_author_list(node))
 
 #id = 4
 def follow(request):
@@ -57,4 +60,4 @@ def test(request):
 #    s = Sphinx()
 #    return HttpResponse(s.get_author_update_number(["蓝"], 1284652800))
     #callback = request.GET['callback']
-    return HttpResponse("cccc(" + str({"code" :400}) +")")
+    return HttpResponse("j(" + str({"code" :400}) +")")

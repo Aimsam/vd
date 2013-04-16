@@ -11,7 +11,7 @@ CACHE_KEY_VIDEO_LIST = "cache_key_video_list"
 CACHE_KEY_VIDEO_KEYS = "cache_key_video_keys"
 CACHE_KEY_VIDEO = "cache_key_video"
 CACHE_KEY_VIDEO_LIST_KEYS = "cache_key_video_list_keys"
-CACHE_KEY_AUTHOR_LIST = "cache_key_author_list"
+CACHE_KEY_AUTHOR_LIST = "cache_key_author_list_node_"
 CACHE_KEY_AUTHOR_KEYS = "cache_key_author_keys"
 
 def fresh_list(node, author):
@@ -23,6 +23,11 @@ def fresh_list(node, author):
         cache.delete(cacheKey)
     #@todo
     return True
+
+def fresh_author_list():
+    cacheKey = CACHE_KEY_AUTHOR_LIST + "*"
+    cache.delete_pattern(cacheKey)
+
 
 def get_list(page, node, author):
     authorName = author
@@ -144,12 +149,14 @@ def love_update():
 
     return True
 
-def get_author_list():
-    cacheKey = CACHE_KEY_AUTHOR_LIST
+#get author list by node_id     id = 3
+def get_author_list(_node):
+    cacheKey = CACHE_KEY_AUTHOR_LIST + _node
     list = cache.get(cacheKey)
     if list is None:
         print "from database"#@todo debug message
-        list = Author.objects.filter(node=1).all()
+        list = Author.objects.filter(node=_node).all()
+        #if len(list) > 1:
         cache.set(cacheKey, list)
     else:
         print "from cache"
@@ -158,12 +165,16 @@ def get_author_list():
         tmp = {
             'id' : author.id,
             'name' : author.name,
+            'node' : author.node.name,
             'description' : author.description,
             'avatar' : author.avatar,
-            'love' : author.love,
+            'love' : int(author.love),
         }
+        print tmp
         authorList.append(tmp)
-    return json.dumps({"code" : 300, "message" : "success", "list" : authorList}, indent = 1)
+    return "jsonp(" + str({"code" : 300, "message" : "success", "list" : authorList})
+
+
 
 #follow the authors id = 4
 def follow(request, author_id, author_name):

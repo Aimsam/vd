@@ -66,18 +66,24 @@ function load_authors() {
     $.ajax({
         url : domain + "/get_author_list",
         success : function(data) {
+
             $("#author_list").append(function(){
                 var obj = jQuery.parseJSON(data);
+
                 for(var i = 0; i < obj.list.length; ++i) {
                     html += '<div class="author" id="' + obj.list[i].id + '"><div class="author_name">' + obj.list[i].name + '</div>';
-                    if(is_followed(obj.list[i].id) != null) {
+                    //alert(obj.list[i]);
+                    //if(is_followed(obj.list[i].id) != null) {
+
                         html += '<div class="follow">取消关注</div>';
-                    } else {
-                        html += '<div class="follow">点击关注</div>';
-                    }
+                    //} else {
+                     //   html += '<div class="follow">点击关注</div>';
+                   // }
+
                     html += '<div class="author_love">love:' + obj.list[i].love + "</div>";
                     html += '<div class="author_avatar"><img src="/img/dog.jpg"></div>';
                     html += '<div class="author_description">' + obj.list[i].description + '</div></div>';
+
                 }
                 return html;
             });
@@ -159,6 +165,7 @@ function get_update_video_number() {
 //是否关注
 function is_followed(id) {
     var follow_dict = $.cookie('follow_dict');
+
     return follow_dict.match(id);
 }
 
@@ -167,7 +174,7 @@ function follow(dom) {
     var author_id = $(dom).parent().attr("id");
     var author_name = $(dom).prev().text();
     var csrftoken = $.cookie('csrftoken');
-    alert($.cookie('follow_dict'));
+    //alert($.cookie('follow_dict'));
     $.ajax({
         url : domain + "/follow/",
         type : 'post',
@@ -210,22 +217,22 @@ window.onscroll = function(){
 
 $(document).ready(function(){
     //test
-    alert('');
-    $.ajax({
-        type:'get',
-        url:'http://localhost:8000/test',
-        dataType:'jsonp',
-        jsonp:"callback",
-        jsonpCallback:"cccc",
-        //data:{"a":"insert", "type":"aa", "time":"bb", "id":"dd", "allowVote":"cc"},
-        async: false,
-        error: function(data) {
-          alert(data);
-        },
-        success:function(data){
-            alert("ddd");
-        }
-    })
+//    alert('');
+//    $.ajax({
+//        type:'get',
+//        url:'http://localhost:8000/test',
+//        dataType:'jsonp',
+//        jsonp:"callback",
+//        jsonpCallback:"cccc",
+//        //data:{"a":"insert", "type":"aa", "time":"bb", "id":"dd", "allowVote":"cc"},
+//        async: false,
+//        error: function(data) {
+//          alert(data);
+//        },
+//        success:function(data){
+//            alert("ddd");
+//        }
+//    })
 
 
 
