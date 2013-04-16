@@ -146,7 +146,6 @@ def love_update():
         cache.delete(cacheKey)
     cache.delete(CACHE_KEY_VIDEO_KEYS)
     cache.delete_pattern(CACHE_KEY_VIDEO_LIST + "*")#clear list cache
-
     return True
 
 #get author list by node_id     id = 3
@@ -172,8 +171,7 @@ def get_author_list(_node):
         }
         print tmp
         authorList.append(tmp)
-    return "jsonp(" + str({"code" : 300, "message" : "success", "list" : authorList})
-
+    return "jsonp(" + str({"code" : 300, "message" : "success", "list" : authorList}) + ")"
 
 
 #follow the authors id = 4
@@ -188,7 +186,6 @@ def follow(request, author_id, author_name):
         except:
             response.set_cookie("follow_dict", None, path="/")
             response.write(json.dumps({"code" : 401, "message" : "cookies error"}))
-
     else:
         follow_dict = {}
     if follow_dict.has_key(author_id) is False:
