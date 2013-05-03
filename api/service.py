@@ -1,12 +1,15 @@
+# -*- coding:utf-8 -*-
 __author__ = 'aimsam'
+
 from django.core.paginator import Paginator
 from admin.models import *
 from django.core.cache import cache
 from django.http import HttpResponse
 import urllib
 import json
+import util
 
-PAGE_COUNT = 20
+PAGE_COUNT = 10
 CACHE_KEY_VIDEO_LIST = "cache_key_video_list"
 CACHE_KEY_VIDEO_KEYS = "cache_key_video_keys"
 CACHE_KEY_VIDEO = "cache_key_video"
@@ -28,7 +31,6 @@ def fresh_author_list():
     cacheKey = CACHE_KEY_AUTHOR_LIST + "*"
     cache.delete_pattern(cacheKey)
 
-
 def get_list(page, node, author):
     authorName = author
     cacheKey = "%s_author_%s_page_%s_node_%s" % (CACHE_KEY_VIDEO_LIST, author, page, node)
@@ -40,9 +42,8 @@ def get_list(page, node, author):
                 authorObject = Author.objects.get(id=author)
                 authorName = authorObject.name
             except Author.DoesNotExist:
-                return json.dumps({'code':201, 'message':'error author id', 'author':authorName}, indent = 1)
-
-        list = Video.objects.order_by("-published")
+                return util.deleteUnicode("jsonp(" + str({'code':201, 'message':'error author id', 'author':authorName}) + ")")
+        list = Video.objects.filter(node=node).order_by("-published")
         if author != 'all':
             list = list.filter(author=author)
         list = list.all()
@@ -50,7 +51,8 @@ def get_list(page, node, author):
         try:
             list = paginator.page(page)
         except :
-            return json.dumps({'code':202, 'message':'error page number', 'max_num':paginator.num_pages}, indent = 1)
+            return util.deleteUnicode("jsonp(" + str({'code':202, 'message':'error page number', 'max_num':paginator.num_pages
+            })  + ")")
         cache.set(cacheKey, list, 24*3600)
     else:
         print "from cache" #@todo debug message
@@ -64,18 +66,21 @@ def get_list(page, node, author):
                      #'tag':video.tags,
                      'title' : video.title,
                      'thumbnail' : video.thumbnail,
+                     'thumbnail_2' : video.thumbnail_2,
                      'quality' : video.quality,
                      'duration' : video.duration,
                      'published' : video.published.strftime("%Y-%m-%d"),
                      'description' : video.description,
                      'remarks' : video.remarks,
-                     'love' : video.love + increment['love'],
-                     'click' : video.click + increment['click']
+                     'love' : int(video.love + increment['love']),
+                     'click' : int(video.click + increment['click'])
         }
 
         videoList.append(video_tmp)
-    data = {'code':200, 'message':'success', 'author':authorName, 'node':'dota', 'list':videoList}
-    return json.dumps(data, indent = 1, sort_keys=False)
+    data = {'code':200, 'message':'success', 'author':authorName, 'node': str(node), 'list':videoList}
+    return util.deleteUnicode("jsonp(" + str(data) + ")")
+
+
 
 def get_increment_byid(id):
     cacheKey = "%s_love_click_id_%s" % (CACHE_KEY_VIDEO, id)
@@ -167,11 +172,12 @@ def get_author_list(_node):
             'node' : author.node.name,
             'description' : author.description,
             'avatar' : author.avatar,
-            'love' : int(author.love),
+            'love' : str(author.love),
         }
         print tmp
         authorList.append(tmp)
-    return "jsonp(" + str({"code" : 300, "message" : "success", "list" : str(authorList)}) + ")"
+
+    return util.deleteUnicode("jsonp(" + str({"code" : 300, "message" : "success", "list" : authorList}) + ")")
 
 
 #follow the authors id = 4

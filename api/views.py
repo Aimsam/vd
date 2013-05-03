@@ -28,7 +28,7 @@ def get_list(request):
     else:
         author = request.GET['author']
     if '_force_refresh_' in request.GET:
-        return HttpResponse(service.fresh_list(page, node, author))
+        return HttpResponse(service.fresh_list(node, author))
     return HttpResponse(service.get_list(page, node, author))
 
 #id = 1
