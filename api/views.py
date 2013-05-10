@@ -17,7 +17,7 @@ def get_list(request):
         if not(page.isdigit()):
             page = 1
     if 'node' not in request.GET:
-        node = 1
+        node = 'all'
     else:
         node = request.GET['node']
         if not(node.isdigit()):
@@ -57,7 +57,14 @@ def follow(request):
     return service.follow(request, author_id, author_name)
 
 def test(request):
-#    s = Sphinx()
-#    return HttpResponse(s.get_author_update_number(["蓝"], 1284652800))
+    s = Sphinx()
+    return HttpResponse(s.get_author_update_number(["蓝"], 1284652800))
     #callback = request.GET['callback']
     return HttpResponse("j(" + str({"code" :400}) +")")
+
+def get_update_number(request):
+    if 'follow_dict' not in request.GET:
+        return HttpResponse("json({'code' : 501, 'message' : 'follow_dict not given'})")
+    follow_dict = request.GET['follow_dict']
+    s = Sphinx()
+    return HttpResponse("jsonp5(" + s.get_author_update_number(follow_dict) + ")")

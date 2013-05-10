@@ -43,7 +43,10 @@ def get_list(page, node, author):
                 authorName = authorObject.name
             except Author.DoesNotExist:
                 return util.deleteUnicode("jsonp(" + str({'code':201, 'message':'error author id', 'author':authorName}) + ")")
-        list = Video.objects.filter(node=node).order_by("-published")
+        if node == 'all':
+            list = Video.objects.filter().order_by("-published")
+        else:
+            list = Video.objects.filter(node=node).order_by("-published")
         if author != 'all':
             list = list.filter(author=author)
         list = list.all()
