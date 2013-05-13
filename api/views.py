@@ -18,10 +18,12 @@ def get_list(request):
             page = 1
     if 'node' not in request.GET:
         node = 'all'
-    else:
+    else :
         node = request.GET['node']
-        if not(node.isdigit()):
-            node = 1
+#    else:
+#        node = request.GET['node']
+#        if not(node.isdigit()):
+#            node = 1
             #@todo
     if 'author' not in request.GET:
         author = 'all'
@@ -29,6 +31,7 @@ def get_list(request):
         author = request.GET['author']
     if '_force_refresh_' in request.GET:
         return HttpResponse(service.fresh_list(node, author))
+
     return HttpResponse(service.get_list(page, node, author))
 
 #id = 1
@@ -41,10 +44,15 @@ def love_update():
     return service.love_update()
 
 #id = 3
-def get_author_list(request, node):
-    if '_force_refresh_' == node:
+def get_author_list(request):
+    if 'node' not in request.GET:
+        return HttpResponse('jsonp3({"code":301, "message":"empty node number"})');
+    else:
+        node = request.GET['node']
+        if not(node.isdigit()):
+            node = 1
+    if '_force_refresh_' in request.GET:
         return HttpResponse(service.fresh_author_list())
-
     return HttpResponse(service.get_author_list(node))
 
 #id = 4

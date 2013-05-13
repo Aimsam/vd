@@ -54,7 +54,7 @@ class Video(models.Model):
     thumbnail_2 = models.CharField(max_length = 255, blank = True)
     quality = models.CharField(max_length = 10, blank = True)
     duration = models.CharField(max_length = 10, blank = True)
-    published = models.DateField(default = 1, blank = True)
+    published = models.DateTimeField()
     description = models.TextField(blank = True)
     remarks = models.TextField(blank = True)
     type = models.IntegerField(blank = True, default = 1)

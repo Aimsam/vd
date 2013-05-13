@@ -22,7 +22,7 @@ class Sphinx(object):
                     unix_time_stamp = split[1].split("--")[1].split('__')[0]
                     self.client.ResetFilters()
                     self.client.SetFilterRange("date_added", int(unix_time_stamp), 9999999999)
-                    self.client.AddQuery(id, "video")
+                    self.client.AddQuery(id, "delta")
             query = self.client.RunQueries()
 
             result = []

@@ -180,7 +180,7 @@ def get_author_list(_node):
         print tmp
         authorList.append(tmp)
 
-    return util.deleteUnicode("jsonp(" + str({"code" : 300, "message" : "success", "list" : authorList}) + ")")
+    return util.deleteUnicode("jsonp3(" + str({"code" : 300, "message" : "success", "list" : authorList}) + ")")
 
 
 #follow the authors id = 4
