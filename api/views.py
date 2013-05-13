@@ -45,14 +45,15 @@ def love_update():
 
 #id = 3
 def get_author_list(request):
+    if '_force_refresh_' in request.GET:
+        return HttpResponse(service.fresh_author_list())
     if 'node' not in request.GET:
         return HttpResponse('jsonp3({"code":301, "message":"empty node number"})');
     else:
         node = request.GET['node']
         if not(node.isdigit()):
             node = 1
-    if '_force_refresh_' in request.GET:
-        return HttpResponse(service.fresh_author_list())
+
     return HttpResponse(service.get_author_list(node))
 
 #id = 4
