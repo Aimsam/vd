@@ -22,7 +22,7 @@ def fresh_list(node, author):
     paginator = Paginator(list, PAGE_COUNT)
     page_num = paginator.num_pages
     for i in range(1, page_num):
-        cacheKey = "%s_author_%s_page_%s_node_%s" % (CACHE_KEY_VIDEO_LIST, author, i, node)
+        cacheKey = "%s_author_%s_page_%s_node_%s" % (CACHE_KEY_VIDEO_KEYS, author, i, node)
         cache.delete(cacheKey)
     #@todo
     return True
@@ -42,7 +42,7 @@ def get_list(page, node, author):
                 authorObject = Author.objects.get(id=author)
                 authorName = authorObject.name
             except Author.DoesNotExist:
-                return util.deleteUnicode("jsonp(" + str({'code':201, 'message':'error author id', 'author':authorName}) + ")")
+                return util.deleteUnicode("jsonp2(" + str({'code':201, 'message':'error author id', 'author':authorName}) + ")")
         if node == 'all':
             list = Video.objects.filter().order_by("-published")
         else:
@@ -54,7 +54,7 @@ def get_list(page, node, author):
         try:
             list = paginator.page(page)
         except :
-            return util.deleteUnicode("jsonp(" + str({'code':202, 'message':'error page number', 'max_num':paginator.num_pages
+            return util.deleteUnicode("jsonp2(" + str({'code':202, 'message':'error page number', 'max_num':paginator.num_pages
             })  + ")")
         cache.set(cacheKey, list, 24*3600)
     else:
@@ -81,7 +81,7 @@ def get_list(page, node, author):
 
         videoList.append(video_tmp)
     data = {'code':200, 'message':'success', 'author':authorName, 'node': str(node), 'list':videoList}
-    return util.deleteUnicode("jsonp(" + str(data) + ")")
+    return util.deleteUnicode("jsonp2(" + str(data) + ")")
 
 
 

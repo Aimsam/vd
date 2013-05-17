@@ -2,7 +2,6 @@ __author__ = 'aimsam'
 # coding=utf-8
 from vd import settings
 from sphinxapi import SphinxClient
-import util
 
 class Sphinx(object):
 
@@ -32,6 +31,5 @@ class Sphinx(object):
         except Exception:
             return "{'code': 502, 'message' : 'unknown exception'}"
 
-    def search(self, words):
-        return None
+
 
