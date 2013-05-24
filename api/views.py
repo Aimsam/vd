@@ -53,7 +53,6 @@ def get_author_list(request):
         node = request.GET['node']
         if not(node.isdigit()):
             node = 1
-
     return HttpResponse(service.get_author_list(node))
 
 #id = 4

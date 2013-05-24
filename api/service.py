@@ -9,7 +9,7 @@ import urllib
 import json
 import util
 
-PAGE_COUNT = 10
+PAGE_COUNT = 20
 CACHE_KEY_VIDEO_LIST = "cache_key_video_list"
 CACHE_KEY_VIDEO_KEYS = "cache_key_video_keys"
 CACHE_KEY_VIDEO = "cache_key_video"
@@ -34,8 +34,8 @@ def fresh_author_list():
 def get_list(page, node, author):
     authorName = author
     cacheKey = "%s_author_%s_page_%s_node_%s" % (CACHE_KEY_VIDEO_LIST, author, page, node)
-    list = cache.get(cacheKey)
-    if list is None:
+    data = cache.get(cacheKey)
+    if data is None:
         print "from database" #@todo debug message
         if authorName != 'all':
             try:
@@ -53,12 +53,16 @@ def get_list(page, node, author):
         paginator = Paginator(list, PAGE_COUNT)
         try:
             list = paginator.page(page)
+            data = {}
+            data['count'] = (int)(paginator.num_pages)
+            data['list'] = list
         except :
-            return util.deleteUnicode("jsonp2(" + str({'code':202, 'message':'error page number', 'max_num':paginator.num_pages
+            return util.deleteUnicode("jsonp2(" + str({'code':202, 'message':'error page number', 'max_num' : paginator.num_pages
             })  + ")")
-        cache.set(cacheKey, list, 24*3600)
+        cache.set(cacheKey, data, 24*3600)
     else:
         print "from cache" #@todo debug message
+        list = data['list']
     videoList = []
     for video in list:
         increment = get_increment_byid(video.id)
@@ -80,7 +84,7 @@ def get_list(page, node, author):
         }
 
         videoList.append(video_tmp)
-    data = {'code':200, 'message':'success', 'author':authorName, 'node': str(node), 'list':videoList}
+    data = {'code':200, 'message':'success', 'count' : data['count'], 'author':authorName, 'node': str(node), 'list':videoList}
     return util.deleteUnicode("jsonp2(" + str(data) + ")")
 
 
@@ -100,15 +104,18 @@ def get_increment_byid(id):
     return data
 
 #click love
+#
+#
+#
 def love(request, id):
     response =  HttpResponse("")
     if id is None or id == "":
         result = {"code":101, "message":"id is empty", "id":id}
-        response.write(json.dumps(result, indent = 1))
+        response.write(util.deleteUnicode("jsonp(" + str(result) + ")"))
         return response
-    if "aaa" in request.COOKIES:
+    if "aaa333" in request.COOKIES:#@todo
         result = {"code":103, "message":"too fast", "id":id}
-        response.write(json.dumps(result, indent = 1))
+        response.write(util.deleteUnicode("jsonp(" + str(result) + ")"))
         return response
     else:
         response.set_cookie("aaa", "2", max_age = 60)
@@ -128,14 +135,18 @@ def love(request, id):
             cache.set(CACHE_KEY_VIDEO_KEYS, keys)
         except Video.DoesNotExist:
             result = {"code":102, "message":"error id", "id":id}
-            response.write(json.dumps(result, indent = 1))
+            response.write(util.deleteUnicode("jsonp(" + str(result) + ")"))
             return response
     else:
         data['love']  += 1
         print data
         cache.set(cacheKey, data)
     result = {"code":100, "message":"success", "id":id, "love":data['love']}
-    response.write(json.dumps(result, indent = 1))
+
+
+
+
+    response.write(util.deleteUnicode("jsonp(" + str(result) + ")"))
     return response
 
 #save love increment into database
@@ -162,7 +173,7 @@ def get_author_list(_node):
     list = cache.get(cacheKey)
     if list is None:
         print "from database"#@todo debug message
-        list = Author.objects.filter(node=_node).all()
+        list = Author.objects.filter(node=_node).order_by("-weight").all()
         #if len(list) > 1:
         cache.set(cacheKey, list)
     else:
@@ -179,7 +190,6 @@ def get_author_list(_node):
         }
         print tmp
         authorList.append(tmp)
-
     return util.deleteUnicode("jsonp3(" + str({"code" : 300, "message" : "success", "list" : authorList}) + ")")
 
 

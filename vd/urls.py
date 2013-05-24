@@ -23,6 +23,9 @@ urlpatterns = patterns('',
         {'document_root':os.path.dirname(__file__)+'/img/'}
     ),
     #new api with jsonp
+
+
+    url(r'^api/love/(.*)', love),
     url(r'^api/get_author_list/$', get_author_list),
     url(r'^api/get_list/$', get_list),
     url(r'^api/get_update_number/$', get_update_number),

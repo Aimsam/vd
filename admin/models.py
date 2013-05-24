@@ -14,6 +14,7 @@ class Node(models.Model):
 class Author(models.Model):
     id = models.CharField(max_length = 50, primary_key = True)
     name = models.CharField(max_length = 50)
+    weight = models.IntegerField(default=1)
     description = models.CharField(max_length = 255, blank = True)
     avatar = models.CharField(max_length = 255, blank = True)    
     love = models.IntegerField(blank = True, default = 1)
