@@ -38,7 +38,6 @@ def fresh_author_list():
 
 def get_list(page, node, author):
     authorName = author
-    print "author=" + author
     cacheKey = "%s_author_%s_page_%s_node_%s" % (CACHE_KEY_VIDEO_LIST, author, page, node)
     data = cache.get(cacheKey)
     if data is None:
@@ -56,27 +55,21 @@ def get_list(page, node, author):
         if author != 'all':
             list = list.filter(author=author)
         else:
-            print 'author == all'
+            pass
         list = list.all()
         paginator = Paginator(list, PAGE_COUNT)
         try:
             list = paginator.page(page)
-            data = {}
-            data['count'] = (int)(paginator.num_pages)
-            data['list'] = list
         except :
             return util.deleteUnicode("jsonp2(" + str({'code':202, 'message':'error page number', 'max_num' : paginator.num_pages
             })  + ")")
-        print "set"
-        print cacheKey
-        print data
+        data = {}
+        data['count'] = (int)(paginator.num_pages)
+        data['list'] = list.object_list
         cache.set(cacheKey, data, 60 * 5)#5min
-        print "setccc"
     else:
         print "from cache" #@todo debug message
-    print "sssssssssssss"
     list = data['list']
-    print list
     videoList = []
     for video in list:
         increment = get_increment_byid(video.id)
@@ -97,7 +90,6 @@ def get_list(page, node, author):
         }
 
         videoList.append(video_tmp)
-    print "end"
     data = {'code':200, 'message':'success', 'count' : data['count'], 'author':authorName, 'node': str(node), 'list':videoList}
     return util.deleteUnicode("jsonp2(" + str(data) + ")")
 
@@ -153,7 +145,6 @@ def love(request, id):
             return response
     else:
         data['love']  += 1
-        print data
         cache.set(cacheKey, data)
     result = {"code":100, "message":"success", "id":id, "love":data['love']}
 
@@ -202,7 +193,6 @@ def get_author_list(_node):
             'avatar' : author.avatar,
             'love' : str(author.love),
         }
-        print tmp
         authorList.append(tmp)
     return util.deleteUnicode("jsonp3(" + str({"code" : 300, "message" : "success", "list" : authorList}) + ")")
 
