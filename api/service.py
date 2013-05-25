@@ -59,18 +59,17 @@ def get_list(page, node, author):
             print 'author == all'
         list = list.all()
         paginator = Paginator(list, PAGE_COUNT)
-        print list
         try:
             list = paginator.page(page)
             data = {}
             data['count'] = (int)(paginator.num_pages)
             data['list'] = list
-            print "data"
         except :
-            print "except"
             return util.deleteUnicode("jsonp2(" + str({'code':202, 'message':'error page number', 'max_num' : paginator.num_pages
             })  + ")")
+        print "set"
         cache.set(cacheKey, data, 60 * 5)#5min
+        print "setccc"
     else:
         print "from cache" #@todo debug message
     print "sssssssssssss"
