@@ -63,16 +63,16 @@ def get_list(page, node, author):
             data = {}
             data['count'] = (int)(paginator.num_pages)
             data['list'] = list
-            print data
         except :
             return util.deleteUnicode("jsonp2(" + str({'code':202, 'message':'error page number', 'max_num' : paginator.num_pages
             })  + ")")
         cache.set(cacheKey, data, 60 * 5)#5min
     else:
         print "from cache" #@todo debug message
-        list = data['list']
-    videoList = []
+    print "sssssssssssss"
+    list = data['list']
     print list
+    videoList = []
     for video in list:
         increment = get_increment_byid(video.id)
         video_tmp = {'id' : video.id,
@@ -92,7 +92,7 @@ def get_list(page, node, author):
         }
 
         videoList.append(video_tmp)
-    print videoList
+    print "end"
     data = {'code':200, 'message':'success', 'count' : data['count'], 'author':authorName, 'node': str(node), 'list':videoList}
     return util.deleteUnicode("jsonp2(" + str(data) + ")")
 
