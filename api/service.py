@@ -27,6 +27,11 @@ def fresh_list(node, author):
     #@todo
     return True
 
+def fresh_all_list():
+    cacheKey = "*_author_*_page_*_node_*"
+    cache.delete_pattern(cacheKey)
+    return True
+
 def fresh_author_list():
     cacheKey = CACHE_KEY_AUTHOR_LIST + "*"
     cache.delete_pattern(cacheKey)
@@ -49,6 +54,9 @@ def get_list(page, node, author):
             list = Video.objects.filter(node=node).order_by("-published")
         if author != 'all':
             list = list.filter(author=author)
+        else:
+            print 'author == all'
+
         list = list.all()
         paginator = Paginator(list, PAGE_COUNT)
         try:
@@ -59,14 +67,13 @@ def get_list(page, node, author):
         except :
             return util.deleteUnicode("jsonp2(" + str({'code':202, 'message':'error page number', 'max_num' : paginator.num_pages
             })  + ")")
-        cache.set(cacheKey, data, 24*3600)
+        cache.set(cacheKey, data, 60 * 5)#5min
     else:
         print "from cache" #@todo debug message
         list = data['list']
     videoList = []
     for video in list:
         increment = get_increment_byid(video.id)
-        print increment
         video_tmp = {'id' : video.id,
                      'author':video.author.id,
                      'user' : video.user.name,

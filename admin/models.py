@@ -3,6 +3,7 @@ from django.db import models
 # Create your models here.
 class Node(models.Model):
     #id
+    id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length = 50)
     
     class Meta:
@@ -26,7 +27,7 @@ class Author(models.Model):
         db_table = u'author'    
 
     def __unicode__(self):
-        return self.name
+        return self.name + "(" + self.node.name + ")"
       
 
 class Tag(models.Model):
