@@ -56,7 +56,6 @@ def get_list(page, node, author):
             list = list.filter(author=author)
         else:
             print 'author == all'
-
         list = list.all()
         paginator = Paginator(list, PAGE_COUNT)
         try:
@@ -64,6 +63,7 @@ def get_list(page, node, author):
             data = {}
             data['count'] = (int)(paginator.num_pages)
             data['list'] = list
+            print data
         except :
             return util.deleteUnicode("jsonp2(" + str({'code':202, 'message':'error page number', 'max_num' : paginator.num_pages
             })  + ")")
@@ -72,6 +72,7 @@ def get_list(page, node, author):
         print "from cache" #@todo debug message
         list = data['list']
     videoList = []
+    print list
     for video in list:
         increment = get_increment_byid(video.id)
         video_tmp = {'id' : video.id,
@@ -91,6 +92,7 @@ def get_list(page, node, author):
         }
 
         videoList.append(video_tmp)
+    print videoList
     data = {'code':200, 'message':'success', 'count' : data['count'], 'author':authorName, 'node': str(node), 'list':videoList}
     return util.deleteUnicode("jsonp2(" + str(data) + ")")
 
